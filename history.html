@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>杭州百慧-百慧历史</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta name="keywords" content="动态心电,动态心电图,百慧医疗" />
+<meta name="description" content="专业的动态心电分析系统生产厂商,打造世界领先的3导/12导智能分析Holter,联系电话：0571-89811068" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<link rel="icon" href="img/beneware.png" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="./js/vue.min.js"></script> 
+<!--[if lt IE 9]>
+   <script src="js/respond.min.js"></script>
+<![endif]-->
+
+</head>
+<body>  
+	<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid top-header center-block pad-hide">
+      <div class="pull-left">        
+        <span class="glyphicon glyphicon-time"></span>
+        <span>周一至周六 8:00 - 18:00 周日 8:00 - 14:00</span>
+      </div>
+      <div class="pull-right">
+        <span class="glyphicon glyphicon-envelope"></span>&nbsp;<a href="mailto:service@beneware.net">service@beneware.net</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-phone-alt"></span>&nbsp;0571-89811068&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-globe"></span> 
+        <a href="en/index.html" class="enLang">English</a>  
+      </div>    
+		</div>        
+    <div class="container-fluid navbar-menu bottom-header center-block">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand menu" href="index.html"><img alt="百慧医疗" src="img/logo.png" /></a>
+      </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->   
+      <div class="collapse navbar-collapse" id="main-menu">  
+        <div class="nav navbar-nav navbar-right menu subscribe text-right visible-lg">          
+          <div class="default-button blue-button">
+            订阅我们
+          </div>          
+        </div>          
+        <ul class="nav navbar-nav navbar-right menu">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="about.html">关于百慧</a></li>
+          <li><a href="history.html" class="menu-selected">百慧历史</a></li>
+          <li class="dropdown">
+            <a href="product.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产品展示 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="pages/product_detail01.html">智能动态心电分析系统</a></li>
+              <li><a href="pages/product_detail02.html">12导联心电工作站</a></li>                         
+              <li><a href="pages/product_detail03.html">贴片式动态心电记录仪</a></li>  
+              <li><a href="pages/product_detail04.html">动态血压监护仪</a></li>               
+              <li><a href="pages/product_detail05.html">远程心电/血压分析平台</a></li>
+            </ul>
+          </li>
+          <li><a href="news.html">新闻中心</a></li>
+          <li><a href="cert.html">相关认证</a></li>
+          <li><a href="contact.html">联系我们</a></li>
+          <li class="pad-show"><a href="en/history.html" class="enLang">English</a></li>
+        </ul> 
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>  
+  
+  <div class="container-fluid banner">    
+      <img src="img/banner.png" class="img-responsive" />
+      <div class="container page-pos phone-hide">
+        <div class="row">
+          <div class="page-tag">       
+            百慧历史
+          </div>
+        </div>
+      </div>					
+  </div>
+
+  <div class="container bread-crumbs">
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="index.html">首页</a>
+        <span class="greater-than">&gt;</span>
+        百慧历史
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 text-right pad-hide">
+        <a href="index.html">返回首页 <span class="glyphicon glyphicon-hand-left"></span></a>
+      </div>      
+    </div>
+    <hr />
+    
+    <div class="timeline animated" id="app">
+        <div class="timeline-row" v-for="historyList in historyLists">
+            <div class="timeline-time">{{historyList.date}}</div>
+            <div class="timeline-icon">
+              <div class="bg-warning"><span class="glyphicon glyphicon-leaf"></span></div>
+            </div>
+            <div class="panel timeline-content">
+              <div class="panel-body">
+                <h4>{{historyList.title}}</h4>
+                <p>{{historyList.event}}</p>
+                <p v-if="historyList.image">
+                  <img :src="historyList.image" class="img-responsive" />
+                </p>
+              </div>
+            </div>
+          </div>
+    </div>
+  </div>
+	
+  <div class="container-fluid footer">
+		<div class="footer-box">
+      <div class="row text-white phone-hide">
+        <div class="col-sm-5">
+          版权所有 ©2017 <span class="pad-hide">百慧医疗</span>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-1">关于百慧</div>
+        <div class="col-sm-1">百慧历史</div>
+        <div class="col-sm-1">产品展示</div>
+        <div class="col-sm-1">新闻中心</div>
+        <div class="col-sm-1">相关认证</div>
+        <div class="col-sm-1">联系我们</div>
+      </div>
+      <div class="row phone-hide">
+        <div class="col-sm-2">
+          <hr />
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-6">
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <a href="index.html">
+            <img alt="" src="img/logo_bottom.png" class="img-responsive" />
+          </a>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-1"><a href="about.html">关于百慧</a></div>
+        <div class="col-sm-1"><a href="history.html">百慧历史</a></div>
+        <div class="col-sm-1"><a href="product.html">产品展示</a></div>
+        <div class="col-sm-1"><a href="news.html">新闻中心</a></div>
+        <div class="col-sm-1"><a href="cert.html">相关认证</a></div>
+        <div class="col-sm-1"><a href="contact.html">联系我们</a></div>
+      </div>
+      <p class="beian">
+          <a href="http://www.beianbeian.com/beianxinxi/b8a5dd2c-86af-4745-9ad6-36036f6e0127.html" target="_blank">
+            <img src="img/beian-gongshang.png" alt="ICP备案">
+            <small> 浙ICP备17034122号</small>         
+          </a>
+          <a href="http://www.beian.gov.cn/portal/index" target="_blank">
+            <img src="img/beian-gongan.png" alt="全国公安备案">
+            <small> 全国公安备号33011802001234</small>
+          </a>
+        </p>
+		</div>
+  </div> 
+  <h3 class="move-top" onclick="moveTop()">
+    <span class="glyphicon glyphicon-menu-up"></span>
+  </h3>
+
+	<script src="js/bootstrap.min.js"></script>
+  <script src="js/main-new.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data () {
+        return {
+          historyLists: ''
+        }
+      },
+      methods:{
+        encodeFormData(data){
+          if(!data){
+            return "";
+          }
+          var pairs = [];
+          for(var name in data){
+            if(!data.hasOwnProperty(name)){
+              continue;
+            }
+            if(typeof data[name] === 'function'){
+              continue;
+            }
+            var value = data[name].toString();
+            name = encodeURIComponent(name.replace('%20','+'));
+            value = encodeURIComponent(value.replace('%20','+'));
+            pairs.push(name + '=' + value);
+          }
+          return pairs.join('&');
+        },
+        postData (url, data, callback) {
+          var request = new XMLHttpRequest();
+          request.open('POST', url);
+          request.onreadystatechange = function() {
+            if(request.readyState===4 && callback){
+              callback(request);
+            }
+          }
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          request.send(this.encodeFormData(data));
+        },  
+        /*获取列表信息： 各种*/      
+        getLists () {          
+          this.postData('./index.php/admin/getLists/history', {lang:'cn'}, function(request){
+            if (request && request.responseText) {
+              this.historyLists = JSON.parse(request.responseText);
+            }else{
+              this.historyLists = [];
+            }
+          }.bind(this))
+        },   
+      },
+      mounted () {
+        this.getLists();
+      }
+    })
+  </script>
+  <script>
+    (function() {
+      $(document).ready(function() {
+        var timelineAnimate;
+        timelineAnimate = function(elem) {
+          return $(".timeline.animated .timeline-row").each(function(i) {
+            var bottom_of_object, bottom_of_window;
+            bottom_of_object = $(this).position().top + $(this).outerHeight();
+            bottom_of_window = $(window).scrollTop() + $(window).height();
+            if (bottom_of_window > bottom_of_object) {
+              return $(this).addClass("active");
+            }
+          });
+        };
+      timelineAnimate();
+      return $(window).scroll(function() {
+        return timelineAnimate();
+        });
+      });
+    }).call(this);
+  </script>
+  <!--[if lt IE 9]>
+   <script>    
+      $(".timeline .timeline-row:nth-child(2n-1)").css({"padding-right":"50%","padding-left":"0"});    
+   </script>
+  <![endif]-->
+  <!--[if lt IE 9]>
+   <script src="js/ie8.js"></script>
+  <![endif]-->
+</body>
+</html>

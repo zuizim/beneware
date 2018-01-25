@@ -1,0 +1,111 @@
+set names utf8;
+create database benenet;
+
+drop table if exists messagelist;
+
+create table messagelist(
+  m_id int(6) primary key auto_increment,
+  m_name varchar(12),
+  m_phone varchar(20),
+  m_mail varchar(32),
+  m_content varchar(200),
+  m_date varchar(32),
+  m_status int(2) default 0
+);
+
+alter table messagelist change  column m_user m_name varchar(30);
+alter table messagelist change  column m_userphone m_phone varchar(30);
+alter table messagelist change  column m_usermail m_mail varchar(64);
+alter table messagelist change  column m_messageinfo m_content varchar(255);
+alter table messagelist change  column m_createtime m_date varchar(32);
+
+alter table messagelist add x_date varchar(32) after m_id;
+update messagelist set x_date=m_date where true;
+alter table messagelist drop column m_date;
+alter table messagelist change column x_date m_date varchar(30);
+
+create table accountlist(
+  a_id int(5) primary key auto_increment,
+  a_user varchar(10) unique not null,
+  a_password varchar(16) not null,
+  a_createtime varchar(32) not null,
+  a_flag boolean default true
+);
+
+
+insert into accountlist values
+( null, 'zlf', 'beneware', '2017-12-15 14:18', true),
+( null, 'tz', 'beneware', '2017-12-15 14:18', true),
+( null, 'ldl', 'beneware', '2017-12-15 14:18', true),
+( null, 'hc', 'beneware', '2017-12-15 14:18', true),
+( null, 'fxq', 'beneware', '2017-12-15 14:18', true),
+( null, 'zlc', 'beneware', '2017-12-15 14:18', true);
+
+drop table if exists contactlisten;
+
+create table contactlisten(
+  c_id int(4) primary key auto_increment,
+  c_title varchar(32) not null,
+  c_tel varchar(32),
+  c_fax varchar(32),
+  c_post varchar(32),
+  c_contact varchar(32),
+  c_mail varchar(32),
+  c_address varchar(255) not null,
+  c_flag boolean,
+  c_remark varchar(64)
+);
+
+delete from contactlisten where true;
+insert into contactlisten values
+(null,'Hangzhou, China （Head Office）','086-571-89811068', '086-571-89811068','310018', null, null, 'Room 1001, 2nd Building, Singapore Technology Zone, 6th Street, Xiasha Area, Hangzhou City', true, null),
+(null,'Suzhou, China','086-512-66806855', '086-512-66806855','215163', null,null,'7th floor, 8th Building, Software Zone, Technology Town, Gaoxin Area, Suzhou City',true,null),
+(null,'Shenzhen, China','086-185 0755 2662', null, '518000','Mr. Ethan', 'ethan.yin@beneware.net', 'Room 1203, HuiChao Technology Building, JinHai Road, West Baoan district, Shengzhen City', true,null),
+(null,'Beijing, China','086-186 1081 9715', null, '100070','Ms. Cai', 'caitingting@beneware.net', 'Room 401, 1st Unit, Huifeng Homeland, Jia 8th Yard, Fanjia Village, Fengtai district, Beijing City', true,null);
+
+drop table if exists newslisten;
+
+create table newslisten(
+  n_id int(8) primary key auto_increment,
+  n_year varchar(16) not null,
+  n_date varchar(16) not null,
+  n_title varchar(64) not null,
+  n_detail varchar(255) not null,
+  n_booth varchar(64),
+  n_image varchar(64),  
+  n_flag boolean,
+  n_remark varchar(32)
+);
+
+insert into newslisten values
+(null, '2012', 'Feb.16', 'Germany Düsseldorf MedicalExpo Medica in 2012', 'The “Internation Hospital and Medical Equipment Expo” in Germany Düsseldorf is a famous MedicalExpo in the world, which is recognised as one of the biggest. It has unreplacable scale and influence to the world medical trade. We will attend the Germany Düsseldorf MEDICA Expo in 2012, and bring our new generation products including Ambulatory Electrocardiogram Analysis System and PC ECG System, Hope to see you then.', 'Beneware\'s booth No.: Room No.2, B43-B', '',true, null),
+(null, '2012', 'Apr.20', 'Arab International Medical Equipment Expro (Arab Health2012)', 'Arab International Medical Equipment Expro is the biggest medical expo in the Middle East region, which is very famous for its various types and good effect as an international professional expo. Since the 1st exhibition in 1975, this expo become bigger every year in scale and members and visitors. Many factories from China、America、England、German、Italy、Korea、Turkey、Brazil、Singapore、Malaysia、UAE attend this expo, and also many hospital administrators and dealers from middle-east region come here to seek business cooperation.', 'Beneware\'s booth No.: Room No.2, C44-B', '',true, null),
+(null, '2013', 'Aug.12', 'Germany Düsseldorf MedicaMedicalExpo in 2013', 'Our company will bring the new generation products, such as Ambulatory Electrocardiogram Analysis System、PC ECG System、 24 hour Ambulatory Blood Pressure Monitor etc in the Germany Düsseldorf MEDICA MedicalExpo, hope to see you there.', 'Beneware\'s booth No.: Room No.2, C44-B', 'http://www.beneware.cn/img/news2.jpg', true, null),
+(null, '2015', 'Apr.12', 'CMEF in May.2015', 'China International Medicinal Equipment Fair (CMEF), launched in 1979, is held twice annually – spring and autumn. After over 38 years of continuous innovation and self-improvement, CMEF has become the largest fair of medical equipment, related products and services in the Asia-Pacific region. it has become the best corporate image release ground as well as a professional information distributing center and an academic, technical exchanging platform.', 'Beneware\'s booth No.: No.1,-D17', '',true, null),
+(null, '2016', 'Apr.05', 'The 75th CMEF(China International Medical Equipment Fair) - 2016', 'The 75th CMEF(China International Medical Equipment Fair)-2016CMEF Spring MedicalExpo at Shanghai, will be hold in National Expo Center during 2016/04/17-2016/04/20. At then, our company will bring the new generation product, such as Ambulatory Electrocardiogram Analysis System、 PC ECG System、24 hour Ambulatory Blood Pressure Monitor etc, welcome to visit us!', 'booth No.：room No.1,-D17', 'http://www.beneware.cn/img/news1.jpg', true, null),
+(null, '2017', 'May.11', 'The 77th CMEF(China International Medical Equipment Fair) - 2017', 'The 77th CMEF(China International Medical Equipment Fair)-2017CMEF Spring MedicalExpo at Shanghai, will be hold in National Expo Center on 2017/05/15-2017/05/18, welcome to visit us.', 'Hangzhou Beneware Booth No.：room No.1,1M06.','',true, null);
+
+
+drop table if exists historylisten;
+create table historylisten(
+  h_id int(8) primary key auto_increment,
+  h_date varchar(32) not null,
+  h_title varchar(255) not null,
+  h_event varchar(255),
+  h_image varchar(64),
+  h_flag boolean default true,
+  h_remark varchar(32)
+);
+
+insert into historylisten(h_date,h_title,h_event,h_image) values
+('Oct, 2006', '', 'The company founding team independent research and development of the "QRS wave intelligent detection technology", "MRC template classification technology" successfully applied to China\'s manned space engineering model task', ''),
+('Oct,2009', '', 'The new generation CT series smart ambulatory electrocardiogram analysis system was invented, QRS wave automatic detection accuracy rate of up to 99.6%, arrhythmia automatic detection accuracy rate as high as 95.1%, reaching the world leading level', 'http://www.beneware.cn/img/product_list_1.png'),
+('Aug, 2010', 'Smart ECG recorder products got the registered certification of CFDA', 'CFDA is the short of “China Food and Drug Administration”, all the new food or drug or related goods must be registered successfully before sale.', ''),
+('Oct,2010', 'Successfully got the authoriation of ISO9001 & ISO13485 & CE auditted by TUV', 'ISO 9000 is the world\'s most mature quality framework, and more than 750,000 organizations in 161 countries around the world are using the world\'s first quality management system standard BS 5750 (BSI) This frame.', ''),
+('Aug,2011', 'Suzhou Beneware Huaye Precision Instrument Co.,Ltd was established', 'This year Suzhou Beneware Huaye Precision Instrument Co.,Ltd was established, Hangzhou Beneware Medical Equipment runs as its wholly owned subsidiary, Hangzhou office focus in the research, and Suzhou office focus in the production.', ''),
+('Sep.29,2011', 'Beneware\'s product was used in airspace with Tiangong-1 to monitor the health of astronauts', 'Tiangong-1 is China\'s first target vehicle, launched at the Jiuquan Satellite Launch Center at 21:16:02 on September 29, 2011, with a total length of 10.4 meters and a maximum diameter of 3.35 meters, consisting of the experimental and resource tanks. Its launch marks the second phase of China\'s entry into China\'s "three-step" strategy.', 'http://www.beneware.cn/img/tiangong.jpg'),
+('Oct,2011', 'A new generation of ECG workstation was ready to use for many hospitals.', '', 'http://www.beneware.cn/img/product_list_2.png'),
+('Oct, 2014', 'Suzhou Beneware', 'Suzhou Beneware Huaye Equipment Co.,Ltd get the certification of National High-tech Corporation', ''),
+('May, 2017', 'Patch Holter Recorder', 'Pacth Holter Recorder pass the registration of CFDA. It\'s super light, smaller and more convinient to bring and use.', 'http://www.beneware.cn/img/product_list_3.png');
+          
+

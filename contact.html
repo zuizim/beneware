@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>杭州百慧-联系我们</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta name="keywords" content="动态心电,动态心电图,百慧医疗" />
+<meta name="description" content="专业的动态心电分析系统生产厂商,打造世界领先的3导/12导智能分析Holter,联系电话：0571-89811068" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<link rel="icon" href="img/beneware.png" />
+<link rel="stylesheet" href="css/bootstrap.min.css" />
+<link rel="stylesheet" href="css/style.css"/>
+<script src="js/jquery-1.11.3.min.js"></script>
+<script src="./js/vue.min.js"></script> 
+<!--[if lt IE 9]>
+   <script src="js/respond.min.js"></script>
+<![endif]-->
+<script type="text/x-template" id="contact">
+  <div class="row">
+    <div class="col-sm-12">
+      <h4 v-if="contactInfo.title"     class="text-center">{{contactInfo.title}}</h4>      
+      <p v-if="contactInfo.tel" class="text-center">电话：{{contactInfo.tel}}</p>
+      <p v-if="contactInfo.fax" class="text-center">传真：{{contactInfo.fax}}</p>
+      <p v-if="contactInfo.post" class="text-center">邮编：{{contactInfo.post}}</p>
+      <p v-if="contactInfo.contact" class="text-center">联系：{{contactInfo.contact}}</p>
+      <p v-if="contactInfo.mail" class="text-center">邮箱：{{contactInfo.mail}}</p>
+      <p v-if="contactInfo.address" class="text-center">地址：{{contactInfo.address}}</p>
+    </div>
+    <div class="col-sm-12">
+      <slot></slot>
+    </div>
+    <div class="col-sm-12">
+      <hr />
+    </div>     
+  </div>
+</script>
+<script>
+  Vue.component('contact',{
+    template: '#contact',
+    props: ['contactInfo']
+  })
+</script>
+
+<script type="text/x-template" id="leaveMessage">
+  <div>
+      <p class="text-center leaveMsg">
+          <button class="btn-message text-info" @click="isShow=!isShow">
+            <span class="glyphicon glyphicon-hand-right"></span> 若有任何建议或意见，请点此留言 <span class="glyphicon glyphicon-hand-left"></span>
+          </button>  
+        </p>
+        <form class="message" v-if="isShow">
+          <div class="close">
+            <small><span @click="isShow=false">&times;</span></small>
+          </div>
+          <h4 class="text-center">           
+            <input type="text" v-model="username" @focus="username=(username=='姓名'?'':username)" @blur="username=(username==''?'姓名':username)" @change="messageTip=''"/>            
+          </h4>
+          <h4 class="text-center">           
+            <input type="text" v-model="userphone" @focus="userphone=(userphone=='电话'?'':userphone)"  @blur="userphone=(userphone==''?'电话':userphone)" @change="messageTip=''"/>           
+          </h4>
+          <h4 class="text-center">            
+            <input type="text" v-model="usermail" @focus="usermail=(usermail=='邮箱'?'':usermail)" @blur="usermail=(usermail==''?'邮箱':usermail)" @change="messageTip=''"/>            
+          </h4>
+          <h4 class="text-center">
+            <small><textarea v-model="message" @focus="message=(message=='您想说的话'?'':message)" @blur="message=(message==''?'您想说的话':message)" @change="messageTip=''"></textarea></small>
+          </h4>
+          <p class="text-center message-tip" :class="submitStatus">
+            {{messageTip}}
+          </p>
+          <p class="text-center">
+            <button class="btn btn-sm btn-warning" type="button" @click="reset">重置</button>
+            &nbsp;&nbsp;<button class="btn btn-sm btn-info" type="button" @click="submitMessage">提交</button>
+          </p>          
+        </form>
+  </div>
+</script>
+<script>
+  Vue.component('leave-message',{
+    template: '#leaveMessage',
+    data () {
+      return {        
+        isShow: false,
+        username: '姓名',
+        userphone: '电话',
+        usermail: '邮箱',
+        message: '您想说的话',
+        submitStatus: '',
+        messageTip: ' '
+      }
+    },
+    methods: {
+      submitMessage () {
+        if((this.username === '姓名') || ((this.userphone === '电话') && (this.usermail ==='邮箱')) || (this.message ==='您想说的话')){
+          this.messageTip = '信息不完整'
+          this.submitStatus = 'text-danger'
+          return false
+        }
+        if(this.userphone ==='电话'){
+          this.userphone = ''
+        }
+        if(this.usermail === '邮箱'){
+          this.usermail = ''
+        }
+        var messageInfo = $.param({username:this.username,userphone:this.userphone,usermail:this.usermail,message:this.message});
+	      var url = "./index.php/admin/leaveMessage";
+	      $.post(url,messageInfo,function(data){		
+		      if(data=="1"){
+            this.submitStatus = "text-success";
+			      this.messageTip = "留言成功";		
+			      this.message = '';		
+		      }else{
+            this.submitStatus = "text-danger";
+			      this.messageTip = "留言失败";
+		      }
+	      }.bind(this))
+      },
+      reset () {
+        this.username = "姓名";
+        this.userphone = "电话";
+        this.usermail = "邮箱";
+        this.message = "您想说的话";
+      }
+    }
+  })
+</script>
+
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fpQpP5FPltZ2W1b75XGHVeQON1H80GwA"></script>
+
+</head>
+<body>  
+	<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid top-header center-block pad-hide">
+      <div class="pull-left">        
+        <span class="glyphicon glyphicon-time"></span>
+        <span>周一至周六 8:00 - 18:00 周日 8:00 - 14:00</span>
+      </div>
+      <div class="pull-right">
+        <span class="glyphicon glyphicon-envelope"></span>&nbsp;<a href="mailto:service@beneware.net">service@beneware.net</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-phone-alt"></span>&nbsp;0571-89811068&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-globe"></span> 
+        <a href="en/contact.html" class="enLang">English</a>  
+      </div>    
+		</div>        
+    <div class="container-fluid navbar-menu bottom-header center-block">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand menu" href="index.html"><img alt="百慧医疗" src="img/logo.png" /></a>
+      </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->   
+      <div class="collapse navbar-collapse" id="main-menu">  
+        <div class="nav navbar-nav navbar-right menu subscribe text-right visible-lg">          
+          <div class="default-button blue-button">
+            订阅我们
+          </div>          
+        </div>          
+        <ul class="nav navbar-nav navbar-right menu">
+          <li><a href="index.html">首页</a></li>
+          <li><a href="about.html">关于百慧</a></li>
+          <li><a href="history.html">百慧历史</a></li>
+          <li class="dropdown">
+            <a href="product.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">产品展示 <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="pages/product_detail01.html">智能动态心电分析系统</a></li>
+              <li><a href="pages/product_detail02.html">12导联心电工作站</a></li>                         
+              <li><a href="pages/product_detail03.html">贴片式动态心电记录仪</a></li>  
+              <li><a href="pages/product_detail04.html">动态血压监护仪</a></li>               
+              <li><a href="pages/product_detail05.html">远程心电/血压分析平台</a></li>
+            </ul>
+          </li>
+          <li><a href="news.html">新闻中心</a></li>
+          <li><a href="cert.html">相关认证</a></li>
+          <li><a href="contact.html" class="menu-selected">联系我们</a></li>
+          <li class="pad-show"><a href="en/contact.html" class="enLang">English</a></li>
+        </ul> 
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>  
+  
+  <div class="container-fluid banner">    
+      <img src="img/banner.png" class="img-responsive" />
+      <div class="container page-pos phone-hide">
+        <div class="row">
+          <div class="page-tag">       
+            联系我们
+          </div>
+        </div>
+      </div>					
+  </div>
+
+  <div class="container bread-crumbs">
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="index.html">首页</a>
+        <span class="greater-than">&gt;</span>
+        联系我们
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 text-right pad-hide">
+        <a href="index.html">返回首页 <span class="glyphicon glyphicon-hand-left"></span></a>
+      </div>      
+    </div>
+    <hr />
+
+    <div class="baidu-map center-block phone-hide">
+		  <div id="allmap"></div>
+    </div>
+    <h3>&nbsp;</h3>
+    <div id="app">
+      <div v-for="(contactList,index) in contactLists" v-key="index">
+        <contact :contact-info="contactList">
+          <div v-if="index==0">
+            <leave-message></leave-message>
+          </div>
+        </contact>
+      </div>
+    </div>  
+    
+  </div>
+	
+  <div class="container-fluid footer">
+		<div class="footer-box">
+      <div class="row text-white phone-hide">
+        <div class="col-sm-5">
+          版权所有 ©2017 <span class="pad-hide">百慧医疗</span>
+        </div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-1">关于百慧</div>
+        <div class="col-sm-1">百慧历史</div>
+        <div class="col-sm-1">产品展示</div>
+        <div class="col-sm-1">新闻中心</div>
+        <div class="col-sm-1">相关认证</div>
+        <div class="col-sm-1">联系我们</div>
+      </div>
+      <div class="row phone-hide">
+        <div class="col-sm-2">
+          <hr />
+        </div>
+        <div class="col-sm-4"></div>
+        <div class="col-sm-6">
+          <hr />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-4">
+          <a href="index.html">
+            <img alt="" src="img/logo_bottom.png" class="img-responsive" />
+          </a>
+        </div>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-1"><a href="about.html">关于百慧</a></div>
+        <div class="col-sm-1"><a href="history.html">百慧历史</a></div>
+        <div class="col-sm-1"><a href="product.html">产品展示</a></div>
+        <div class="col-sm-1"><a href="news.html">新闻中心</a></div>
+        <div class="col-sm-1"><a href="cert.html">相关认证</a></div>
+        <div class="col-sm-1"><a href="contact.html">联系我们</a></div>
+      </div>
+      <p class="beian phone-hide">
+          <a href="http://www.beianbeian.com/beianxinxi/b8a5dd2c-86af-4745-9ad6-36036f6e0127.html" target="_blank">
+            <img src="img/beian-gongshang.png" alt="ICP备案">
+            <small> 浙ICP备17034122号</small>         
+          </a>
+          <a href="http://www.beian.gov.cn/portal/index" target="_blank">
+            <img src="img/beian-gongan.png" alt="全国公安备案">
+            <small> 全国公安备号33011802001234</small>
+          </a>
+        </p>
+		</div>
+  </div>  
+  <h3 class="move-top" onclick="moveTop()">
+    <span class="glyphicon glyphicon-menu-up"></span>
+  </h3>
+
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/main-new.js"></script>
+  
+  <script type="text/javascript">
+	// 百度地图API功能
+	var map = new BMap.Map("allmap");
+	var point = new BMap.Point(120.374927,30.31004);
+	map.centerAndZoom(point,12);
+	
+	// 创建地址解析器实例
+	var myGeo = new BMap.Geocoder();
+	// 将地址解析结果显示在地图上,并调整地图视野
+	myGeo.getPoint("杭州经济技术开发区新加坡科技园2幢1001", function(point){
+		if (point) {
+			map.centerAndZoom(point, 17);
+			map.addOverlay(new BMap.Marker(point));
+		}else{
+			alert("您选择地址没有解析到结果!");
+		}
+	}, "杭州市");
+</script>
+<script>
+    new Vue({
+      el: '#app',
+      data () {
+        return {
+          contactLists: ''
+        }
+      },
+      methods:{
+        encodeFormData(data){
+          if(!data){
+            return "";
+          }
+          var pairs = [];
+          for(var name in data){
+            if(!data.hasOwnProperty(name)){
+              continue;
+            }
+            if(typeof data[name] === 'function'){
+              continue;
+            }
+            var value = data[name].toString();
+            name = encodeURIComponent(name.replace('%20','+'));
+            value = encodeURIComponent(value.replace('%20','+'));
+            pairs.push(name + '=' + value);
+          }
+          return pairs.join('&');
+        },
+        postData (url, data, callback) {
+          var request = new XMLHttpRequest();
+          request.open('POST', url);
+          request.onreadystatechange = function() {
+            if(request.readyState===4 && callback){
+              callback(request);
+            }
+          }
+          request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          request.send(this.encodeFormData(data));
+        },  
+        /*获取列表信息： 各种*/      
+        getLists () {          
+          this.postData('./index.php/admin/getLists/contact', {lang:'cn'}, function(request){
+            if (request && request.responseText) {
+              this.contactLists = JSON.parse(request.responseText);
+            }else{
+              this.contactLists = [];
+            }
+          }.bind(this))
+        },   
+      },
+      mounted () {
+        this.getLists();
+      }
+    })
+  </script>
+  <!--[if lt IE 9]>
+   <script>    
+      $(".leaveMsg").css("display","none");    
+   </script>
+  <![endif]-->
+  <!--[if lt IE 9]>
+   <script src="js/ie8.js"></script>
+  <![endif]-->
+</body>
+</html>

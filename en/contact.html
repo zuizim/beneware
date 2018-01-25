@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Beneware-Contact</title>
+<meta http-equiv="X-UA-Compatible" content="IE=9" />
+<meta name="keywords" content="Holter,ECG,Beneware Medical" />
+<meta name="description" content="professional Holter manufacture in China, focus in making the most advanced 3 lines / 12 lines smart analysis Holter,tel：086-571-89811068" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+<link rel="icon" href="../img/beneware.png" />
+<link rel="stylesheet" href="../css/bootstrap.min.css" />
+<link rel="stylesheet" href="../css/style.css"/>
+<script src="../js/jquery-1.11.3.min.js"></script>
+<script src="../js/vue.min.js"></script> 
+<!--[if lt IE 9]>
+   <script src="../js/respond.min.js"></script>
+<![endif]-->
+<script type="text/x-template" id="contact">
+  <div class="row address-info">
+    <div class="col-sm-12">
+      <h4 v-if="contactInfo.title"     class="text-center">{{contactInfo.title}}</h4>      
+      <p v-if="contactInfo.tel" class="text-center">Tel：{{contactInfo.tel}}</p>
+      <p v-if="contactInfo.fax" class="text-center">Fax：{{contactInfo.fax}}</p>
+      <p v-if="contactInfo.post" class="text-center">Post：{{contactInfo.post}}</p>
+      <p v-if="contactInfo.contact" class="text-center">Contact：{{contactInfo.contact}}</p>
+      <p v-if="contactInfo.mail" class="text-center">Mail：{{contactInfo.mail}}</p>
+      <p v-if="contactInfo.address" class="text-center">Add：{{contactInfo.address}}</p>
+    </div>
+    <div class="col-sm-12">
+      <slot></slot>
+    </div>
+    <div class="col-sm-12">
+      <hr />
+    </div>     
+  </div>
+</script>
+<script>
+  Vue.component('contact',{
+    template: '#contact',
+    props: ['contactInfo']
+  })
+</script>
+
+<script type="text/x-template" id="leaveMessage">
+  <div>
+      <p class="text-center leaveMsg">
+          <button class="btn-message text-info" @click="isShow=!isShow">
+            <span class="glyphicon glyphicon-hand-right"></span> click here to leave message <span class="glyphicon glyphicon-hand-left"></span>
+          </button>  
+        </p>
+        <form class="message" v-if="isShow">
+          <div class="close">
+            <small><span @click="isShow=false">&times;</span></small>
+          </div>
+          <h4 class="text-center">           
+            <input type="text" v-model="username" @focus="username=(username=='your name'?'':username)" @blur="username=(username==''?'your name':username)" @change="messageTip=''"/>            
+          </h4>
+          <h4 class="text-center">           
+            <input type="text" v-model="userphone" @focus="userphone=(userphone=='your phone'?'':userphone)"  @blur="userphone=(userphone==''?'your phone':userphone)" @change="messageTip=''"/>           
+          </h4>
+          <h4 class="text-center">            
+            <input type="text" v-model="usermail" @focus="usermail=(usermail=='your mail'?'':usermail)" @blur="usermail=(usermail==''?'your mail':usermail)" @change="messageTip=''"/>            
+          </h4>
+          <h4 class="text-center">
+            <small><textarea v-model="message" @focus="message=(message=='please write here...'?'':message)" @blur="message=(message==''?'please write here...':message)" @change="messageTip=''"></textarea></small>
+          </h4>
+          <p class="text-center message-tip" :class="submitStatus">
+            {{messageTip}}
+          </p>
+          <p class="text-center">
+            <button class="btn btn-sm btn-warning" type="button" @click="reset">Reset</button>
+            &nbsp;&nbsp;<button class="btn btn-sm btn-info" type="button" @click="submitMessage">Submit</button>
+          </p>          
+        </form>
+  </div>
+</script>
+<script>
+  Vue.component('leave-message',{
+    template: '#leaveMessage',
+    data () {
+      return {        
+        isShow: false,
+        username: 'your name',
+        userphone: 'your phone',
+        usermail: 'your mail',
+        message: 'please write here...',
+        submitStatus: '',
+        messageTip: ' '
+      }
+    },
+    methods: {
+      submitMessage () {        
+        if((this.username === 'your name') || ((this.userphone === 'your phone') && (this.usermail ==='your mail')) || (this.message ==='please write here...')){
+          this.messageTip = 'info is not enough'
+          this.submitStatus = 'text-danger'
+          return false
+        }
+        if(this.userphone ==='your phone'){
+          this.userphone = ''
+        }
+        if(this.usermail === 'your mail'){
+          this.usermail = ''
+        }
+        var messageInfo = $.param({username:this.username,userphone:this.userphone,usermail:this.usermail,message:this.message});
+	      var url = "../index.php/admin/leaveMessage";
+	      $.post(url,messageInfo,function(data){		
+		      if(data=="1"){
+            this.submitStatus = "text-success";
+			      this.messageTip = "submit success, thx";		
+			      this.message = '';		
+		      }else{
+            this.submitStatus = "text-danger";
+			      this.messageTip = "submit failed";
+		      }
+	      }.bind(this))
+      },
+      reset () {
+        this.username = "your name";
+        this.userphone = "your phone";
+        this.usermail = "your mail";
+        this.message = "please write here...";
+      }
+    }
+  })
+</script>
+<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=fpQpP5FPltZ2W1b75XGHVeQON1H80GwA"></script>
+
+</head>
+<body>  
+	<nav class="navbar navbar-fixed-top" id="navbar">
+    <div class="container-fluid top-header center-block pad-hide">
+      <div class="pull-left">        
+        <span class="glyphicon glyphicon-time"></span>
+        <span>Monday to Saturday 8:00 - 18:00 Sunday 8:00 - 14:00</span>
+      </div>
+      <div class="pull-right">
+        <span class="glyphicon glyphicon-envelope"></span>&nbsp;<a href="mailto:service@beneware.net">service@beneware.net</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-phone-alt"></span>&nbsp;0571-89811068&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="glyphicon glyphicon-globe"></span> 
+        <a href="../contact.html" class="cnLang">中文简体</a>  
+      </div>    
+		</div>        
+    <div class="container-fluid navbar-menu bottom-header center-block">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a href="../en/index.html" class="navbar-brand menu"><img alt="Beneware Medical" src="../img/logo.png"></a>
+      </div>
+
+    <!-- Collect the nav links, forms, and other content for toggling -->   
+      <div class="collapse navbar-collapse" id="main-menu">  
+        <div class="nav navbar-nav navbar-right menu subscribe text-right visible-lg">          
+          <div class="default-button blue-button">
+            Follow us
+          </div>          
+        </div>          
+        <ul class="nav navbar-nav navbar-right menu">
+          <li><a href="../en/index.html">Home</a></li>
+          <li><a href="../en/about.html">About us</a></li>
+          <li><a href="../en/history.html">History</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Products <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="../en/pages/product_detail01.html">Smart Ambulatory ECG Analysis System</a></li>
+              <li><a href="../en/pages/product_detail02.html">CardioShield PC ECG System</a></li>                         
+              <li><a href="../en/pages/product_detail03.html">Patch Holter Recorder</a></li>  
+              <li><a href="../en/pages/product_detail04.html">Ambulatory Blood Pressure Monitor</a></li>               
+              <li><a href="../en/pages/product_detail05.html">Remote ECG/BP Analysis Platform</a></li>
+            </ul>
+          </li>
+          <li><a href="../en/news.html">News</a></li>
+          <li><a href="../en/cert.html">Certification</a></li>
+          <li><a href="../en/contact.html" class="menu-selected">Contact us</a></li>
+          <li class="pad-show"><a href= "../contact.html" class="cnLang">中文简体</a> </li>
+        </ul> 
+      </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>   
+  
+  <div class="container-fluid banner">    
+      <img src="../img/banner.png" class="img-responsive" />
+      <div class="container page-pos phone-hide">
+        <div class="row">
+          <div class="page-tag">       
+            Contact us
+          </div>
+        </div>
+      </div>					
+  </div>
+
+  <div class="container bread-crumbs">
+    <div class="row">
+      <div class="col-sm-4">
+        <a href="../en/index.html">Home</a>
+        <span class="greater-than">&gt;</span>
+        Contact us
+      </div>
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4 text-right pad-hide">
+        <a href="../en/index.html">back to Home <span class="glyphicon glyphicon-hand-left"></span></a>
+      </div>      
+    </div>
+    <hr />
+
+    <div class="baidu-map center-block phone-hide">      
+      <div id="allmap"></div>
+    </div>
+    <h3>&nbsp;</h3>
+    <div id="app">
+      <div v-for="(contactList,index) in contactLists" v-key="index">
+        <contact :contact-info="contactList">
+          <div v-if="index==0">
+            <leave-message></leave-message>
+          </div>
+        </contact>
+      </div>
+    </div> 
+  </div>
+	
+  <div class="container-fluid footer">
+      <div class="footer-box">
+        <div class="row text-white phone-hide">
+          <div class="col-sm-5">
+            All rights reserved ©2017 
+            <span class="pad-hide">Beneware Medical</span>
+          </div>
+          <div class="col-sm-7">
+            <ul class="list-unstyled footer-menu clearfix text-right">
+              <li>About us</li>
+              <li>History</li>
+              <li>Products</li>
+              <li>News</li>
+              <li>Certification</li>
+              <li>Contact us</li>
+            </ul>
+          </div>        
+        </div>
+        <div class="row phone-hide">
+          <div class="col-sm-3">
+            <hr />
+          </div>
+          <div class="col-sm-4">         
+          </div>
+          <div class="col-sm-5">
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-4">
+            <a href="../en/index.html">
+              <img alt="" src="../img/logo_bottom.png" class="img-responsive" />
+            </a>
+          </div>
+          <div class="col-sm-1"></div>
+          <div class="col-sm-7">
+              <ul class="list-unstyled footer-menu clearfix text-right">
+                <li><a href="../en/about.html">About us</a></li>
+                <li><a href="../en/history.html">History</a></li>
+                <li><a href="../en/product.html">Products</a></li>
+                <li><a href="../en/news.html">News</a></li>
+                <li><a href="../en/cert.html">Certification</a></li>
+                <li><a href="../en/contact.html">Contact us</a></li>
+              </ul>
+          </div>        
+        </div>
+        <p class="beian phone-hide">
+            <a href="http://www.beianbeian.com/beianxinxi/b8a5dd2c-86af-4745-9ad6-36036f6e0127.html" target="_blank">
+              <img src="../img/beian-gongshang.png" alt="ICP备案">
+              <small> 浙ICP备17034122号</small>         
+            </a>
+            <a href="http://www.beian.gov.cn/portal/index" target="_blank">
+              <img src="../img/beian-gongan.png" alt="全国公安备案">
+              <small> 全国公安备号33011802001234</small>
+            </a>
+          </p>
+      </div>
+    </div> 
+  <h3 class="move-top" onclick="moveTop()">
+    <span class="glyphicon glyphicon-menu-up"></span>
+  </h3>
+
+	<script src="../js/bootstrap.min.js"></script>
+  <script src="../js/main-new.js"></script> 
+  
+  
+  <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyB6ia5AoAGkVG9MC7rsM0mn6JJfNPRTwAE&language=en"></script>
+  <script>
+    var mapType = google.maps.MapTypeId.ROADMAP;
+    var lat = 30.303049, lng = 120.368772, zoom = 13;
+    var mapOptions = {
+      center: new google.maps.LatLng(lat, lng),  //地图的中心点
+      zoom: zoom,               　　　　　　　　　　//地图缩放比例
+      mapTypeId: mapType,       　　　　　　　　　　//指定地图展示类型：卫星图像、普通道路
+      scrollwheel: true          　　　　　　　　　 //是否允许滚轮滑动进行缩放
+    };
+    var map = new google.maps.Map(document.getElementById("allmap"), mapOptions); //创建谷歌地图
+    var marker = new google.maps.Marker({
+      map: map,
+      position: new google.maps.LatLng(lat, lng)
+    });
+    var infowindow = new google.maps.InfoWindow({content: "Hangzhou Beneware Medical" }); //创建一个InfoWindow
+      infowindow.open(map, marker); //把这个infoWindow绑定在选定的marker上面
+      //使用谷歌地图定义的事件，给这个marker添加点击事件
+      google.maps.event.addListener(marker, "click", function(){
+      infowindow.open(map,marker);
+    });
+  </script>
+  <script>
+      new Vue({
+        el: '#app',
+        data () {
+          return {
+            contactLists: ''
+          }
+        },
+        methods:{
+          encodeFormData(data){
+            if(!data){
+              return "";
+            }
+            var pairs = [];
+            for(var name in data){
+              if(!data.hasOwnProperty(name)){
+                continue;
+              }
+              if(typeof data[name] === 'function'){
+                continue;
+              }
+              var value = data[name].toString();
+              name = encodeURIComponent(name.replace('%20','+'));
+              value = encodeURIComponent(value.replace('%20','+'));
+              pairs.push(name + '=' + value);
+            }
+            return pairs.join('&');
+          },
+          postData (url, data, callback) {
+            var request = new XMLHttpRequest();
+            request.open('POST', url);
+            request.onreadystatechange = function() {
+              if(request.readyState===4 && callback){
+                callback(request);
+              }
+            }
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.send(this.encodeFormData(data));
+          },  
+          /*获取列表信息： 各种*/      
+          getLists () {          
+            this.postData('../index.php/admin/getLists/contact', {lang:'en'}, function(request){
+              if (request && request.responseText) {
+                this.contactLists = JSON.parse(request.responseText);
+              }else{
+                this.contactLists = [];
+              }
+            }.bind(this))
+          },   
+        },
+        mounted () {
+          this.getLists();
+        }
+      })
+    </script>
+  
+  <!--[if lt IE 9]>
+   <script>    
+      $(".leaveMsg").css("display","none");    
+   </script>
+  <![endif]-->
+  <!--[if lt IE 9]>
+   <script src="../js/ie8.js"></script>
+  <![endif]-->
+
+</body>
+</html>

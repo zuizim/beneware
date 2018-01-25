@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html>
+<head>
+  
+  <meta charset="utf-8" />
+  <title>杭州百慧-网站管理</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=9" />
+  <meta name="keywords" content="动态心电,动态心电图,百慧医疗" />
+  <meta name="description" content="专业的动态心电分析系统生产厂商,打造世界领先的3导/12导智能分析Holter,联系电话：0571-89811068" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <link rel="icon" href="img/beneware.png" />
+  <link rel="stylesheet" href="https://at.alicdn.com/t/font_474306_lszp2bxv3jl9pb9.css">
+  <!-- 引入样式 -->  
+  <link rel="stylesheet" href="./css/admin.css">
+  <!-- 先引入 Vue -->
+  <script src="./js/vue.min.js"></script>   
+
+</head>
+
+<script type="text/x-template" id="editDiv">
+  <div class="edit">
+      <span v-if="title" class="title">{{title}}</span>
+      <span v-if="!editing" class="input" >{{content}}</span>
+      <span v-if="editing">        
+        <textarea v-if="contentLength>30 || (contentLength>20 && textareaWidth<350) || textareaed" :value="content" :style="'width:'+ textareaWidth + 'px; height:'+(contentLength*20/textareaWidth)*(contentLength>30?25:30)+'px;'" @change="setNewVal"/>
+        <input v-else :type="inputtype?inputtype:'text'" :style="'width:'+contentLength*17+'px'" :value="content" @change="setNewVal"/>
+      </span>       
+  </div>
+</script>
+<script>
+  Vue.component('edit-div',{
+      template: '#editDiv',
+      props: ['title', 'content', 'outerKey', 'outerIndex', 'uneditable', 'blank', 'textareaed', 'inputtype','editing'],
+      data () {
+        return {          
+          newVal: '',          
+          textareaWidth: (window.innerWidth-70)>540?540:(window.innerWidth-70),
+          contentLength: ''
+        }
+      },      
+      methods: {               
+        setNewVal (e) {          
+          this.newVal = e.target.value;
+          this.$emit('changeinput', this.newVal, this.outerKey, this.outerIndex)
+        }
+      },
+      mounted () {
+        var str = this.content;
+        var count=0;
+        if(str){
+          for(i=0; i<str.length; i++){
+            if(/\d|\w/.test(str[i])){
+              count++;
+            }
+          }
+        }
+        
+        this.contentLength = str?Math.floor(str.length - count/2):15;
+
+        this.editing = this.blank;
+        if(this.blank){
+          this.textareaWidth = 306;
+          this.contentLength = 18;
+        }
+        if(this.textareaed){
+          this.contentLength = 60;
+        }
+      }
+    })
+</script>
+
+<script type="text/x-template" id="myFieldset">
+  <fieldset class="myfield">
+    <button @click="removeThis" v-if="!hideRemove"><i class="icon iconfont icon-cancel" /> 删除</button>
+    <button @click="saveThis" class="save" v-if="!hideSave && editing"><i class="icon iconfont icon-ok" /> 保存</button>
+    <button @click="editThis" class="save" v-if="!hideEdit && !editing"><i class="icon iconfont icon-edit" /> 编辑</button>
+    <slot :is-editing="editing"></slot>
+  </fieldset>
+</script>
+<script>
+  Vue.component('my-fieldset',{
+      template: '#myFieldset',
+      props: ['hideRemove','hideSave','hideEdit','editStatus'],
+      data () {
+        return{
+          editing: false
+        }
+      },
+      methods : {
+        removeThis () {          
+          this.$emit('remove');
+        },
+        saveThis () {
+          this.editing = false;
+          this.$emit('save');
+        },
+        editThis () {
+          this.editing = true;       
+          this.$emit('edit');
+        }
+      },
+      mounted () {
+        this.editing = this.editStatus;
+      }
+    })
+</script>
+
+<script type="text/x-template" id="myHeader">
+  <div class="my-header">
+    <div class="language">
+      <span @click="setLangEn" :class="lang=='en'?'active':''">En</span><span @click="setLangCn" :class="lang=='cn'?'active':''" >中</span>
+    </div>
+    <slot></slot>
+  </div>
+</script>
+<script>
+  Vue.component('my-header',{
+      template: '#myHeader', 
+      props: ['lang'],
+      methods : {
+        setLangCn () {         
+          this.$emit('setlang', 'cn');
+        },
+        setLangEn () {
+          this.$emit('setlang', 'en');
+        }
+      }
+    })
+</script>
+
+<script type="text/x-template" id="myModal">
+  <div class="mymodal" :class="status">
+    <p class="center">
+      <span v-if="status=='success'"><i class="icon iconfont icon-ok" /></span>
+      <span v-if="status=='error'"><i class="icon iconfont icon-cancel" /></span>
+      <span v-if="status=='loading'"><i class="icon iconfont icon-about" /></span>
+    </p>
+    <p class="center">{{content}}</p>
+  </div>
+</script>
+<script>
+  Vue.component('my-modal',{
+    template: '#myModal',
+    props: ['content', 'status']
+  })
+</script>
+
+<script type="text/x-template" id="login">
+  <div class="form">
+    <form action="">
+      <p class="center">
+        <img src="./img/beneware.png" alt="百慧医疗" />
+      </p>
+      <h3 class="center">杭州百慧医疗</h3>
+     <div class="input">
+        <span><i class="icon iconfont icon-people"></i></span>
+        <span>|</span>
+        <input type="text" v-model="username" placeholder="管理员账号"/>
+      </div>
+      <div class="input">
+        <span><i class="icon iconfont icon-key"></i></span>
+        <span>|</span>
+        <input type="password" v-model="password" placeholder="管理员密码"/>
+      </div>
+      <div class="input">
+        <span><i class="icon iconfont icon-code"></i></span>
+        <span>|</span>
+        <input type="text" v-model="usercode" placeholder="验证码" @keyup.enter="onLogin"/>
+        <span class="code" @click="bornCode">
+          {{verifyCode}}
+        </span>
+      </div>
+      <div class="input submit">
+        <button type="button" @click="onLogin">立即登录</button>
+      </div>
+      <div class="tip">
+        <p class="center">{{loginTip}}</p>
+      </div>
+      <p class="stamp center">
+        杭州百慧医疗设备有限公司
+      </p>
+    </form>
+  </div>
+</script>
+
+<script>
+Vue.component('login',{
+  template: '#login',
+  data () {
+    return {
+      username: '',
+      password: '',
+      usercode: '',
+      verifyCode: '',
+      loginTip: '',
+    }
+  },
+  methods: {
+    encodeFormData(data){
+      if(!data){
+        return "";
+      }
+      var pairs = [];
+      for(var name in data){
+        if(!data.hasOwnProperty(name)){
+          continue;
+        }
+        if(typeof data[name] === 'function'){
+          continue;
+        }
+        var value = data[name].toString();
+        name = encodeURIComponent(name.replace('%20','+'));
+        value = encodeURIComponent(value.replace('%20','+'));
+        pairs.push(name + '=' + value);
+      }
+      return pairs.join('&');
+    },
+    postData (url, data, callback) {
+      var request = new XMLHttpRequest();
+      request.open('POST', url);
+      request.onreadystatechange = function() {
+        if(request.readyState===4 && callback){
+          callback(request);
+        }
+      }
+      request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      request.send(this.encodeFormData(data));
+    },  
+    bornCode () {
+      this.verifyCode = Array(4).fill('').map(function(){return String.fromCharCode(Math.floor(26*Math.random())+65)}).join('')
+      this.usercode = '';
+    },
+    onLogin() {
+      if(this.username && this.password && this.usercode){
+        if (this.usercode.toUpperCase() != this.verifyCode) {
+          this.loginTip = '验证码错误';
+        }else{
+          this.loginTip = '正在登录';
+          this.verifyAccount(this.username.toLowerCase(), this.password);
+        }
+      }else{
+        this.loginTip = '信息不完整';
+        this.logined = false;
+      }
+    },
+    verifyAccount (username, password) {
+      this.postData('./index.php/admin/login', {username,password}, function(request){            
+        if(request && request.responseText=="1"){
+          this.loginTip = '登录成功';          
+          this.rememberLoginStatus();
+          this.$emit('success');          
+        }else{
+          this.logined = false;
+          this.loginTip = '登录失败';
+        }
+      }.bind(this))
+    },
+    rememberLoginStatus () {
+      sessionStorage.clear();
+      sessionStorage.setItem('benewarex',Math.random());
+    },
+  },
+  mounted () {
+    this.bornCode();
+  }
+})
+</script>
+
+<body>
+  <div id="app">
+    <div class="login" v-if="!logined">
+      <login @success="loginSuccess"/>
+    </div> 
+
+    <div class="logined" v-else>
+      <div class="header">
+        <ul>
+          <li v-for="(column,index) in columns" :key="index" @click="navbarClick(index)" :class="activeIndex==index+1?'active':''">            
+            <a :href="column.path">
+              <i class="icon iconfont" :class="column.icon"></i>
+              <span>{{ column.content }}</span>
+            </a>
+          </li>                     
+        </ul>
+      </div>
+      <div class="main">
+        <div v-if="isModalShow">
+          <my-modal :content="modalContent" :status="modalStatus"></my-modal>
+        </div>        
+        <div class="contact" v-if="activeIndex==1">
+          <my-header :lang="language" @setlang="setLang">
+            <p class="center"><big>联系方式列表</big><button @click="toAddNew" class="add">+new</button></p>
+          </my-header>
+          <div v-if="addNew">
+            <my-fieldset edit-status="true" @save="saveNew('contact')" @remove="addNew=false">
+              <legend> 新增联系方式</legend>
+              <p v-for="(val,key) in newContact" :key="'add-contact-'+key">
+                <edit-div
+                  :title="cnKey[key]"
+                  :content="val"                  
+                  :outer-key="key"
+                  editing="true" @changeinput="changeNewContact" :blank="true" :textareaed="key=='address'" :inputtype="key=='tel'?'tel':'text'" />
+              </p>                  
+            </my-fieldset>
+          </div>
+          <div
+                v-for="(contactInfo, index) in contactInfos"
+                :key="'contact-'+index">
+                <my-fieldset :hide-remove="true" @save="saveAll(index,'contact')" @edit="toEdit">
+                  <template slot-scope="props">
+                      <legend>{{ contactInfo.title }}</legend>
+                      <p v-for="(val,key) in contactInfo" v-show="(props.isEditing && key!='flag' && key!='status' && key!='id' && key!='remark') || (val && key!='title' && key!='id' && key!='flag' && key!='status' && key!='remark')" :key="'contact-'+index+'-'+key">
+                        <edit-div
+                          :title="cnKey[key]"
+                          :content="val"
+                          :outer-index="index"
+                          :outer-key="key"
+                          :editing="props.isEditing" @changeinput="changeContact"/>
+                      </p>   
+                  </template>                                 
+                </my-fieldset>
+              </div>
+        </div>
+
+            <div class="news" v-if="activeIndex==2">              
+              <my-header :lang="language" @setlang="setLang">
+                <p class="center"><big>新闻事件列表</big><button @click="toAddNew" class="add">+new</button></p>
+              </my-header>
+              <div v-if="addNew">
+                <my-fieldset edit-status="true" @save="saveNew('news')" @remove="addNew=false">
+                  <legend> 新增新闻事件</legend>
+                  <p v-for="(val,key) in newNews" :key="'add-contact-'+key">
+                    <edit-div
+                      :title="cnKey[key]"
+                      :content="val"                     
+                      :outer-key="key"
+                      editing="true" @changeinput="changeNewNews" :blank="true" :textareaed="key=='title' || key=='detail'" :inputtype="key=='tel'?'tel':'text'"/>
+                  </p>                  
+                </my-fieldset>
+              </div>
+              <div
+                v-for="(newsList, index) in newsLists"
+                :key="'news-'+index">
+                <my-fieldset @remove="removeLists(index,'news')" @save="saveAll(index,'news')" @edit="toEdit">
+                  <template slot-scope="props">
+                      <legend>{{ newsList.title }}</legend>
+                      <p v-for="(val,key) in newsList" v-show="(props.isEditing && key!='flag' && key!='status' && key!='id' && key!='remark') || (val && key!='title' && key!='id' && key!='flag' && key!='status' && key!='remark')" :key="'news-'+index+'-'+key">
+                        <edit-div
+                          :title="cnKey[key]"
+                          :content="val"
+                          :outer-index="index"
+                          :outer-key="key"
+                          :editing="props.isEditing" @changeinput="changeNews"/>
+                      </p>
+                  </template>                  
+                </my-fieldset>
+              </div>
+            </div>
+
+            <div class="history" v-if="activeIndex==3">
+              <my-header :lang="language" @setlang="setLang">
+                <p class="center"><big>历史事件列表</big><button @click="toAddNew" class="add">+new</button></p>
+              </my-header>
+              <div v-if="addNew">
+                  <my-fieldset edit-status="true" @save="saveNew('history')" @remove="addNew=false" >
+                    <legend> 新增历史事件</legend>
+                    <p v-for="(val,key) in newHistory" :key="'add-history-'+key">
+                      <edit-div
+                        :title="cnKey[key]"
+                        :content="val"                        
+                        :outer-key="key"
+                        editing="true" @changeinput="changeNewHistory" :blank="true" :textareaed="key=='title'||key=='event'" :inputtype="key=='tel'?'tel':'text'"/>
+                    </p>                  
+                  </my-fieldset>
+                </div>
+              <div
+                  v-for="(historyList, index) in historyLists"
+                  :key="'history-'+index">
+                  <my-fieldset @remove="removeLists(index,'history')" @save="saveAll(index,'history')" @edit="toEdit">
+                    <template slot-scope="props">
+                        <legend>{{ historyList.title }}</legend>
+                        <p v-for="(val,key) in historyList" v-show="(props.isEditing && key!='flag' && key!='status' && key!='id' && key!='remark') || (val && key!='id' && key!='flag' && key!='status' && key!='remark')" :key="'history-'+index+'-'+key">
+                          <edit-div
+                            :title="cnKey[key]"
+                            :content="val"
+                            :outer-index="index"
+                            :outer-key="key"
+                            :editing="props.isEditing" @changeinput="changeHistory"/>
+                        </p>
+                    </template>                   
+                  </my-fieldset>
+                </div>                
+            </div>
+
+            <div class="history" v-if="activeIndex==4">
+              <my-header :lang="language" @setlang="setLang"></my-header>
+                <p class="center"><big>网站留言列表</big></p>
+              </my-header>
+              <div
+                  v-for="(messageList, index) in messageLists"
+                  :key="'message-'+index">
+                  <my-fieldset :hide-save="true" :hide-edit="true" @remove="removeLists(index,'message')">
+                    <legend>{{ messageList.name }}</legend>
+                    <p v-for="(val,key) in messageList" v-show="val && key!='id' && key!='flag' && key!='status' && key!='remark'">
+                      <edit-div
+                        :title="cnKey[key]"
+                        :content="val"
+                        :outer-index="index"
+                        :outer-key="key"
+                        uneditable=true />
+                    </p>
+                  </my-fieldset>
+              </div>
+            </div>
+      </div>      
+    </div>    
+  </div>
+  <script src="./js/admin.js"></script>
+</body>  
+
+</html>

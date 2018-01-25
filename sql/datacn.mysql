@@ -1,0 +1,126 @@
+set names utf8;
+create database benenet;
+
+drop table if exists messagelist;
+
+create table messagelist(
+  m_id int(6) primary key auto_increment,
+  m_name varchar(12),
+  m_phone varchar(20),
+  m_mail varchar(32),
+  m_content varchar(200),
+  m_date varchar(32),
+  m_status int(2) default 0
+);
+
+alter table messagelist change  column m_user m_name varchar(30);
+alter table messagelist change  column m_userphone m_phone varchar(30);
+alter table messagelist change  column m_usermail m_mail varchar(64);
+alter table messagelist change  column m_messageinfo m_content varchar(255);
+alter table messagelist change  column m_createtime m_date varchar(32);
+
+alter table messagelist change column m_content m_content varchar(1024);
+
+alter table messagelist add index(m_date);
+
+alter table messagelist add x_date varchar(32) after m_id;
+update messagelist set x_date=m_date where true;
+alter table messagelist drop column m_date;
+alter table messagelist change column x_date m_date varchar(30);
+
+create table accountlist(
+  a_id int(5) primary key auto_increment,
+  a_user varchar(10) unique not null,
+  a_password varchar(16) not null,
+  a_createtime varchar(32) not null,
+  a_flag boolean default true
+);
+
+alter table accountlist change column a_password a_password varchar(64);
+
+
+insert into accountlist values
+( null, 'zlf', 'beneware', '2017-12-15 14:18', true),
+( null, 'tz', 'beneware', '2017-12-15 14:18', true),
+( null, 'ldl', 'beneware', '2017-12-15 14:18', true),
+( null, 'hc', 'beneware', '2017-12-15 14:18', true),
+( null, 'fxq', 'beneware', '2017-12-15 14:18', true),
+( null, 'zlc', 'beneware', '2017-12-15 14:18', true);
+
+update accountlist set a_password='c78c31ed02c53881441127e1da82ab8e' where true;
+
+drop table if exists contactlist;
+
+create table contactlist(
+  c_id int(4) primary key auto_increment,
+  c_title varchar(32) not null,
+  c_tel varchar(32),
+  c_fax varchar(32),
+  c_post varchar(32),
+  c_contact varchar(32),
+  c_mail varchar(32),
+  c_address varchar(128) not null,
+  c_flag boolean,
+  c_remark varchar(64)
+);
+
+alter table contactlist add c_status boolean default 0;
+
+insert into contactlist values
+(null,'杭州(总部)','0571-89811068', '0571-89811068','310018', null, null, '杭州经济技术开发区6号大街新加坡科技园2幢1001室', true, null),
+(null,'苏州','0512-66806855', '0512-66806855','215163', null,null,'苏州市高新区科技城软件园8号楼7层',true,null),
+(null,'深圳','185 0755 2662', null, '518000','尹经理', null, '深圳宝安西乡金海路汇潮科技大厦1203室', true,null),
+(null,'北京','186 1081 9715', null, '100070','蔡经理', null, '北京市丰台区樊家村甲8号院汇丰家园一号楼四单元401室', true,null);
+
+drop table if exists newslist;
+
+create table newslist(
+  n_id int(8) primary key auto_increment,
+  n_year varchar(16) not null,
+  n_date varchar(16) not null,
+  n_title varchar(64) not null,
+  n_detail varchar(255) not null,
+  n_booth varchar(64),
+  n_image varchar(64),  
+  n_flag boolean,
+  n_remark varchar(32)
+);
+
+insert into newslist values
+(null, '2012', '2月16日', '2012德国杜塞尔多夫医疗展 Medica', '德国杜塞尔多夫“国际医院及医疗设备用品展览会”是世界知名的综合性医疗展，被公认为世界上最大的医院及医疗设备展览会，以其不可替代的规模和影响力位居世界医疗贸易展的首位。我司将参加2012德国杜塞尔多夫MEDICA展会，届时将展出最新一代动态心电分析系统和心电工作站，欢迎各位专家莅临指导。', '杭州百慧展位号：3号馆C11。', '',true, null),
+(null, '2012', '4月20日', '阿拉伯国际医疗设备展览会(Arab Health2012)', '阿拉伯国际医疗设备展览会是中东地区展览规模最大、展品门类较为齐全、展览效果良好的国际专 业医疗设备展览会。自1975年首次举办以来,展会规模、参展厂商和观众人数逐年扩大，来自中国、美国 、英国、德国、意大利、韩国、土耳其、巴西、新加坡、马来西亚、阿联酋等国家的参展商参加该展览会，展会吸引了中东各国的医院管理者和医疗器械经销商到会参观，洽谈贸易。', '杭州百慧展位号：2号馆C11-B。', '',true, null),
+(null, '2013', '8月12日', '2013德国杜塞尔多夫Medica医疗展', '我司将携新一代动态心电分析系统、心电工作站、24小时动态血压等产品参加德国杜塞尔多夫MEDICA医疗展，展位号为2号馆C44-B，欢迎光临。', '展位号：1号馆-D17', 'http://www.beneware.cn/img/news2.jpg',true, null),
+(null, '2015', '4月12日', '2015年5月上海CMEF医博会', '中国际医疗器械博览会(CMEF)，作为亚太地区最大的医疗器械及相关产品、 服务展览会。展出内容直接并全面服务于医疗器械行业从源头到终端整条医疗产业链。CMEF已成为医疗行业内最大的专业医疗采购贸易平台、最佳的企业形象发布地以及专业信息集散地和学术、技术交流平台。 2015年的第73届春季CMEF将在5月15日于上海的国家会展中心举办，为期4天，届时我公司将展出自主产品，欢迎新老客户莅临展台参观指导！', '杭州百慧展位号：1号馆1M06。', '',true, null),
+(null, '2016', '4月5日', '第75届中国国际医疗器械博览会——2016年CMEF上海春季医疗器械展会', '医疗器械界万众瞩目的第75届中国国际医疗器械博览会-2016CMEF上海春季医疗器械展会，将于2016年4月17-20日在上海国家会展中心举办。届时，我公司将展出新一代动态心电分析系统、心电工作站、24小时动态血压等产品，欢迎广大新老客户前来莅临参观!', '展位号：1号馆E30', 'http://www.beneware.cn/img/news1.jpg', true, null),
+(null, '2017', '5月11日', '第77届中国国际医疗器械博览会--2017CMEF上海春季医疗器械展会', '第77届中国国际医疗器械博览会-2017CMEF上海春季医疗器械展会，将于2017年5月15-18日在上海国家会展中心举办，欢迎新老客户光临洽谈。', '杭州百慧展位号：2号馆M09。', '',true, null);
+
+
+
+
+
+
+
+
+drop table if exists historylist;
+create table historylist(
+  h_id int(8) primary key auto_increment,
+  h_date varchar(32) not null,
+  h_title varchar(255) not null,
+  h_event varchar(255),
+  h_image varchar(64),
+  h_flag boolean default true,
+  h_remark varchar(32)
+);
+
+insert into historylist(h_date,h_title,h_event,h_image) values
+('2006年10月', '', '公司创始团队全自主研发的“QRS波智能检测技术”、“MRC模板分类技术”成功应用于中国载人航天工程型号任务', ''),
+('2009年10月', '', '推出新一代CT系列智能性动态心电分析系统，QRS波自动检测准确率高达99.6%，心律失常事件自动检测准确率高达95.1%，达到世界领先水平。', 'http://www.beneware.cn/img/product_list_1.png'),
+('2010年8月', '动态心电记录仪产品获得CFDA注册认证', '国家食品药品监督管理总局，其英文名为“China Food and Drug Administration”，简称CFDA。', ''),
+('2010年10月', '通过TUV审核的ISO9001，ISO13485以及CE认证', 'ISO 9001是由全球第一个质量管理体系标准 BS 5750（BSI撰写）转化而来的，ISO 9001是迄今为止世界上最成熟的质量框架，全球有161个国家/地区的超过75万家组织正在使用这一框架。', ''),
+('2011年8月', '苏州百慧华业精密仪器有限公司成立', '杭州百慧公司成为苏州百慧公司全资子公司，杭州专注于研发，苏州专注于生产', ''),
+('2011年9月29日', '百慧公司产品随“天宫一号”一起遨游太空，为航天员医学健康维护提供技术支持。', '天宫一号是中国第一个目标飞行器，于2011年9月29日21时16分03秒在酒泉卫星发射中心发射，飞行器全长10.4米，最大直径3.35米，由实验舱和资源舱构成。它的发射标志着中国迈入中国航天“三步走”战略的第二步第二阶段。', 'http://www.beneware.cn/img/tiangong.jpg'),
+('2011年10月', '推出新一代带临床采集模式的心电工作站产品', '', 'http://www.beneware.cn/img/product_list_2.png'),
+('2014年10月', '苏州百慧', '苏州百慧华业精密仪器有限公司获得国家高新技术企业认证', ''),
+('2017年5月', '贴片式动态心电记录仪', '贴片式动态心电记录仪注册通过，正式推向市场。更小，更轻，更便捷。', 'http://www.beneware.cn/img/product_list_3.png');
+          
+

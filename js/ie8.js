@@ -1,0 +1,1 @@
+$(".footer-box>.phone-hide").css("display","none");
