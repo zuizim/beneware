@@ -1486,3 +1486,11 @@ form.message{
 	width: 80px;
 	margin-left: 30px;
 }
+
+img{
+	transition: all ease 1s;
+}
+.cert-pic img:hover{
+	transform: rotateZ(10deg);
+	transform-origin: center center;
+}
