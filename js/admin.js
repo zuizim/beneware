@@ -258,8 +258,7 @@ new Vue({
           this.activeIndex = index + 1;
           /*点击退出后操作 */
           if( index==this.columns.length-1){
-            this.logined = false; 
-            localStorage.clear();
+            this.logined = false;
             sessionStorage.clear();
           }else{
             this.getLists(this.columnsContent[index]);

@@ -11,7 +11,10 @@
 <link rel="icon" href="img/beneware.png" />
 <link rel="stylesheet" href="css/bootstrap.min.css" />
 <link rel="stylesheet" href="css/style.css"/>
+<link rel="stylesheet" href="css/baguetteBox.min.css">
+<script src="js/baguetteBox.min.js"></script>
 <script src="js/jquery-1.11.3.min.js"></script>
+<script src="./js/vue.min.js"></script> 
 <!--[if lt IE 9]>
    <script src="js/respond.min.js"></script>
 <![endif]-->
@@ -27,7 +30,7 @@
         <span class="glyphicon glyphicon-envelope"></span>&nbsp;<a href="mailto:service@beneware.net">service@beneware.net</a>&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="glyphicon glyphicon-phone-alt"></span>&nbsp;0571-89811068&nbsp;&nbsp;&nbsp;&nbsp;
         <span class="glyphicon glyphicon-globe"></span> 
-        <a href="en/index.html" class="enLang">English</a>  
+        <a href="en/cert.html" class="enLang">English</a>  
       </div>    
 		</div>        
     <div class="container-fluid navbar-menu bottom-header center-block">
@@ -95,22 +98,15 @@
         <a href="index.html">返回首页 <span class="glyphicon glyphicon-hand-left"></span></a>
       </div>      
     </div>
-		<hr />
-		<div class="row cert-pic">
-      <div class="col-sm-2"></div>
-      <div class="col-sm-2"><a href="img/licence-0.jpg" target="_blank"><img src="img/licence-0.jpg" class="img-responsive center-block"/></a></div>
-			<div class="col-sm-2"><a href="img/licence.jpg" target="_blank"><img src="img/licence.jpg" class="img-responsive center-block"/></a></div>
-			<div class="col-sm-2"><a href="img/licence-holter.jpg" target="_blank"><img src="img/licence-holter.jpg" class="img-responsive center-block"/></a></div>
-			<div class="col-sm-2"><a href="img/licence-ecg.jpg" target="_blank"><img src="img/licence-ecg.jpg" class="img-responsive center-block"/></a></div>
-		</div>
-		<div class="row cert-pic">
-			<div class="col-sm-2"></div>		
-      <div class="col-sm-2"><a href="img/licence-eec.jpg" target="_blank"><img src="img/cert-eec.jpg" class="img-responsive center-block"/></a></div>
-      <div class="col-sm-2"><a href="img/licence-tua.jpg" target="_blank"><img src="img/cert-tua.jpg" class="img-responsive center-block"/></a></div>
-      <div class="col-sm-2"><a href="img/licence-production.jpg" target="_blank"><img src="img/licence-production.jpg" class="img-responsive center-block"/></a></div>
-			<div class="col-sm-2"><a href="img/high-tech.jpg" target="_blank"><img src="img/high-tech.jpg" class="img-responsive center-block"/></a></div>
-		</div>
-      
+    <hr />
+    <div class="row" id="app">
+      <div class="col-sm-8 col-sm-offset-2">
+          <div class="baguetteBoxOne cert-pic">
+            <a v-for="image in images" :href="'img/'+image+'.jpg'" title="杭州百慧医疗设备有限公司">
+              <img :src="'img/'+image+'.jpg'" alt="百慧医疗">            
+          </div>
+      </div>
+    </div>
   </div>
 	
   <div class="container-fluid footer">
@@ -171,5 +167,19 @@
   <!--[if lt IE 9]>
    <script src="js/ie8.js"></script>
   <![endif]-->
+  <script>
+    new Vue({
+      el: '#app',
+      data() {
+        return {
+          images: 'licence-0 licence licence-holter licence-ecg high-tech licence-production cert-eec cert-tua'.split(' '),
+          columns: '关于百慧 百慧历史 产品展示 新闻中心 相关认证 联系我们'.split(' ')
+        }
+      }
+    })
+  </script>
+  <script>
+    baguetteBox.run('.baguetteBoxOne');
+  </script>
 </body>
 </html>

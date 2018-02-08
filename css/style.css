@@ -3,6 +3,10 @@
 	.navbar .navbar-menu{    
     max-width: 1200px;    
 	}
+
+	.message input, .message textarea{
+		width: 340px;
+	}
 } 
 
 
@@ -110,9 +114,8 @@
 		line-height: 28px !important;
 	}
 
-	.message textarea{
-		min-height: 100px !important;	
-		width: 250px !important;
+	.message input, .message textarea{
+		width: 260px;
 	}
 } 
 
@@ -1437,8 +1440,7 @@ form.message{
 
 
 .message textarea{
-	min-height: 120px;	
-	width: 320px;
+	min-height: 120px;		
 	border: 1px solid #ccc;
 }
 
@@ -1454,8 +1456,7 @@ form.message{
 }
 
 /*重写input, 因为placeholder的兼容性问题*/
-.message input{
-	width: 320px;
+.message input{	
 	height: 28px;
 	text-align: center;
 	font-size: 12px;
@@ -1488,9 +1489,12 @@ form.message{
 }
 
 img{
-	transition: all ease 1s;
+	transition: all ease 1s;	
+}
+.cert-pic img{
+	width: 22%;
 }
 .cert-pic img:hover{
-	transform: rotateZ(10deg);
+	transform: rotateZ(6deg);
 	transform-origin: center center;
 }

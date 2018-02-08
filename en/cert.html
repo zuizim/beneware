@@ -11,6 +11,8 @@
 <link rel="icon" href="../img/beneware.png" />
 <link rel="stylesheet" href="../css/bootstrap.min.css" />
 <link rel="stylesheet" href="../css/style.css"/>
+<link rel="stylesheet" href="../css/baguetteBox.min.css">
+<script src="../js/baguetteBox.min.js"></script>
 <script src="../js/jquery-1.11.3.min.js"></script>
 <!--[if lt IE 9]>
    <script src="../js/respond.min.js"></script>
@@ -96,23 +98,37 @@
       </div>      
     </div>
 		<hr />
-    <div class="row cert-pic">
-        <div class="col-sm-2"></div>
-        <div class="col-sm-2"><a href="../img/licence-0.jpg" target="_blank"><img src="../img/licence-0.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/licence.jpg" target="_blank"><img src="../img/licence.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/licence-holter.jpg" target="_blank"><img src="../img/licence-holter.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/licence-ecg.jpg" target="_blank"><img src="../img/licence-ecg.jpg" class="img-responsive center-block"/></a></div>
+    <div class="row">
+        <div class="col-sm-8 col-sm-offset-2">
+            <div class="baguetteBoxOne cert-pic">
+                <a href="../img/licence-0.jpg" data-caption="Beneware Medical Inc">
+                    <img src="../img/licence-0.jpg" alt="Beneware">
+                </a>
+                <a href="../img/licence.jpg" title="Beneware Medical Inc">
+                    <img src="../img/licence.jpg" alt="Beneware">
+                </a>
+                <a href="../img/licence-holter.jpg" title="Beneware Medical Inc">
+                    <img src="../img/licence-holter.jpg" alt="">
+                </a>
+                <a href="../img/licence-ecg.jpg" title="Beneware Medical Inc">
+                    <img src="../img/licence-ecg.jpg" alt="">
+                </a>
+                <a href="../img/cert-eec.jpg" title="Beneware Medical Inc">
+                    <img src="../img/cert-eec.jpg" alt="">
+                </a>
+                <a href="../img/cert-tua.jpg" title="Beneware Medical Inc">
+                    <img src="../img/cert-tua.jpg" alt="">
+                </a>
+                <a href="../img/licence-production.jpg" title="Beneware Medical Inc">
+                    <img src="../img/licence-production.jpg" alt="">
+                </a>
+                <a href="../img/high-tech.jpg"  title="Beneware Medical Inc">
+                    <img src="../img/high-tech.jpg" alt="">
+                </a>
+            </div>
+        </div>
       </div>
-      <div class="row cert-pic">
-        <div class="col-sm-2"></div>		
-        <div class="col-sm-2"><a href="../img/licence-eec.jpg" target="_blank"><img src="../img/cert-eec.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/licence-tua.jpg" target="_blank"><img src="../img/cert-tua.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/licence-production.jpg" target="_blank"><img src="../img/licence-production.jpg" class="img-responsive center-block"/></a></div>
-        <div class="col-sm-2"><a href="../img/high-tech.jpg" target="_blank"><img src="../img/high-tech.jpg" class="img-responsive center-block"/></a></div>
-      </div>
-      
-  </div>
-	
+	</div>
   <div class="container-fluid footer">
       <div class="footer-box">
         <div class="row text-white phone-hide">
@@ -180,5 +196,8 @@
   <!--[if lt IE 9]>
    <script src="../js/ie8.js"></script>
   <![endif]-->
+  <script>
+      baguetteBox.run('.baguetteBoxOne');
+  </script>
 </body>
 </html>

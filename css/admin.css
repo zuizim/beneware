@@ -166,7 +166,7 @@ button, input{
   background: #112232;
 }
 
-.login input{
+.input input{
   background: transparent;
   padding-left: 10px;
   border: 0px;
@@ -495,11 +495,15 @@ button.add{
 }
 
 .mymodal.success{
-  color: #090;
+  color: #060;
 }
 
 .mymodal.loading{
   color: #990;
+}
+
+.success{
+  color: #060;
 }
 
 .right, .left{
@@ -518,4 +522,11 @@ button.add{
 
 .right{
   right: 0;
+}
+
+input[type="checkbox"]{
+  position: relative;
+  width: 14px;
+  height: 14px;
+  top: 3px;
 }
