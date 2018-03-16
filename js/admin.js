@@ -1,3 +1,11 @@
+var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d92d1b2d437abbf020e7b5574c8f846f";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  
 new Vue({
       el: '#app',
       data() {
@@ -92,7 +100,7 @@ new Vue({
         },  
         /*获取列表信息： 各种*/      
         getLists (type) {          
-          this.postData('./index.php/admin/getLists/'+type, {lang:this.language}, function(request){
+          this.postData('./ci/index.php/admin/getLists/'+type, {lang:this.language}, function(request){
             if (request && request.responseText) {              
               switch(type){
                 case 'contact':
@@ -157,7 +165,7 @@ new Vue({
             this.showModal('error','数据不完整');
             return false;
           }         
-          this.postData('./index.php/admin/addNewList/'+type,{lang:this.language, data: JSON.stringify(data)}, function(request){            
+          this.postData('./ci/index.php/admin/addNewList/'+type,{lang:this.language, data: JSON.stringify(data)}, function(request){            
             if(request && request.responseText){
               result = JSON.parse(request.responseText);
               if (result['code']===0) {
@@ -240,7 +248,7 @@ new Vue({
           }else{
             /*如果有变动，则找出变动的信息 */
             var theChangedData = this.findChangedData(data,dataOrigin);
-            this.postData('./index.php/admin/updateLists/'+type,{lang:this.language, data: JSON.stringify(theChangedData)}, function(request){            
+            this.postData('./ci/index.php/admin/updateLists/'+type,{lang:this.language, data: JSON.stringify(theChangedData)}, function(request){            
               if (request && request.responseText ) {
                 var result = JSON.parse(request.responseText);              
                 if(result['code']==0 && result['tip']==theChangedData.length){
@@ -309,7 +317,7 @@ new Vue({
               default:
                 return false;  
             }
-            this.postData('./index.php/admin/removeLists/'+type,{id, lang:this.language}, function(request){
+            this.postData('./ci/index.php/admin/removeLists/'+type,{id, lang:this.language}, function(request){
               if(request && request.responseText){
                 var result = JSON.parse(request.responseText);
                 if(result['code']===0){

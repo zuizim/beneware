@@ -352,7 +352,7 @@
           },  
           /*获取列表信息： 各种*/      
           getLists () {          
-            this.postData('../index.php/admin/getLists/contact', {lang:'en'}, function(request){
+            this.postData('../ci/index.php/admin/getLists/contact', {lang:'en'}, function(request){
               if (request && request.responseText) {
                 this.contactLists = JSON.parse(request.responseText);
               }else{

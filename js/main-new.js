@@ -1,10 +1,12 @@
-function moveTop(){
-  var currentPos = document.body.scrollTop;
+function moveTop(){	
+  var currentPos = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
   if(currentPos<=0){return false;}
   var timer = setInterval(function(){
     targetPos = parseInt(currentPos /1.1) ;
     targetPos<2 && (targetPos=0);
-    document.body.scrollTop = targetPos;
+		document.body.scrollTop = targetPos;
+		document.documentElement.scrollTop = targetPos;
+		window.pageYOffset = targetPos;
     currentPos = targetPos;
     if(targetPos<2){
       clearInterval(timer);
@@ -62,4 +64,13 @@ $(function () {
 	})
 	
 });
+
+var _hmt = _hmt || [];
+  (function() {
+    var hm = document.createElement("script");
+    hm.src = "https://hm.baidu.com/hm.js?d92d1b2d437abbf020e7b5574c8f846f";
+    var s = document.getElementsByTagName("script")[0]; 
+    s.parentNode.insertBefore(hm, s);
+  })();
+  
 

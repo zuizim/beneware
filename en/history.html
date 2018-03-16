@@ -227,7 +227,7 @@
           },  
           /*获取列表信息： 各种*/      
           getLists () {          
-            this.postData('../index.php/admin/getLists/history', {lang:'en'}, function(request){
+            this.postData('../ci/index.php/admin/getLists/history', {lang:'en'}, function(request){
               if (request && request.responseText) {
                 this.historyLists = JSON.parse(request.responseText);
               }else{
